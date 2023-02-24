@@ -1,0 +1,18 @@
+stages:
+  - build
+
+variables:
+  OKD_REGISTRY: "image-registry.apps.private.okd4.teh-1.cloud.io"
+  OKD_URL: "https://api.okd4.teh-1.cloud.io:6443"
+  OKD_PROJECT_NAME: "grafana-dpn"
+
+build-ci-registry:
+  image: docker:19.03.12
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
