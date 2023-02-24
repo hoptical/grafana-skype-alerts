@@ -2,7 +2,7 @@ import os
 
 from fastapi import FastAPI, Request
 
-from app.helper.skype_utils import skype_instance, grafana_message_transformer
+from app.helper.skype_utils import skype_instance
 from app.helper.model import GrafanaAlert
 from app.helper.logger import logger
 
@@ -15,14 +15,9 @@ def notify(room_name, alert: GrafanaAlert):
 
     logger.info("Grafana Alert Message", alert)
 
-    msg = grafana_message_transformer(alert)
-    if 'No Data' not in msg:
-        # this part is added since the alert is sent by Grafana no matter if there's an issue or not
-        # no data means that there are no issues so we do no want to receive a skype message telling
-        # us that everything is fine
-        channel = skype_instance.session.chats.chat(chat_id)
-        # mentioning all and sending our created message
-        channel.sendMsg("<at id=\" * \">all</at> \n" + msg, rich=True)
+    channel = skype_instance.session.chats.chat(chat_id)
+    # mentioning all and sending our created message
+    channel.sendMsg(str(alert), rich=True)
 
     return "Grafana alert sent to the channel"
 
