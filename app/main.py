@@ -59,5 +59,6 @@ def health_check():
     return "The server is healthy"
 
 @app.post('/api/log_body')
-def log_requesst_body(request:Request):
-    logger.info(request.json())
+async def log_requesst_body(request:Request):
+    data = await request.json()
+    logger.info(data)
