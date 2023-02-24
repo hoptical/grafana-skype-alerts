@@ -29,7 +29,7 @@ build-okd-registry:
 
   script:
     - docker login -u ${CONTAINER_REGISTRY_USERNAME} -p ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY_ADDRESS}
-    - docker docker build -t ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG} .
+    - docker build -t ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG} .
     - docker push ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG}
 
   dependencies:
