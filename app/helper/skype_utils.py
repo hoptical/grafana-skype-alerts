@@ -24,12 +24,16 @@ class SkypeUtils(object):
         # finding group id is not easy without Pyhton so we get the group name and
         # look for its id in this method
         # the account should  be added to the group before hand
-        recent_chats = self.session.chats.recent()
-        for chat in recent_chats:
-            if 'topic' in dir(recent_chats[chat]):
-                group_name = recent_chats[chat].__getattribute__('topic')
-                if group_name == room_name:
-                    return chat
+        while self.session.chats.recent():
+            pass  # Just populate the cache.
+
+        for chat in self.session.chats:
+            try:
+                topic = chat.topic
+                if topic == room_name:
+                    return chat.id
+            except AttributeError:
+                pass            
                 
         logger.error("Room Name not found!")
         return None
