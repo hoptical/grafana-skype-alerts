@@ -1,11 +1,21 @@
 stages:
+  - test
   - build
   - release
+  - deploy
 
 variables:
   OKD_REGISTRY: "image-registry.apps.private.okd4.teh-1.cloud.io"
   OKD_URL: "https://api.okd4.teh-1.cloud.io:6443"
   OKD_PROJECT_NAME: "skype-notifier-dpn"
+
+test: 
+  image: sourabh385/helm-oc-cli:latest
+  stage: test
+  script:
+    - oc login --token=${OKD_TOKEN} --server=${OKD_URL}
+    - oc project ${OKD_PROJECT_NAME}
+    - helm install --dry-run skype-notifier helm 
 
 build-ci-registry:
   image: docker:19.03.12
@@ -41,3 +51,14 @@ build-okd-registry:
 
   dependencies:
     - build-ci-registry
+
+deploy: 
+  image: sourabh385/helm-oc-cli:latest
+  stage: deploy
+  script:
+    - oc login --token=${OKD_TOKEN} --server=${OKD_URL}
+    - oc project ${OKD_PROJECT_NAME}
+    - helm upgrade --install skype-notifier helm 
+
+  dependencies:
+    - build-okd-registry
