@@ -1,7 +1,6 @@
 stages:
   - test
   - build
-  - release
   - deploy
 
 variables:
@@ -17,20 +16,9 @@ test:
     - oc project ${OKD_PROJECT_NAME}
     - helm install --dry-run skype-notifier helm 
 
-build-ci-registry:
-  image: docker:19.03.12
-  stage: build
-  variables:
-    DOCKER_DRIVER: overlay2
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} .
-    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
-
 build-okd-registry:
   image: docker:19.03.12
-  stage: release
+  stage: build
   variables:
     DOCKER_DRIVER: overlay2
     CONTAINER_REGISTRY_ADDRESS: "$OKD_REGISTRY"
@@ -39,18 +27,13 @@ build-okd-registry:
     CONTAINER_REGISTRY_USERNAME: "gitlab-ci"
     CONTAINER_REGISTRY_PASSWORD: ${OKD_TOKEN}
 
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
-    - docker logout $CI_REGISTRY
-
   script:
     - docker login -u ${CONTAINER_REGISTRY_USERNAME} -p ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY_ADDRESS}
-    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG}
+    - docker docker build -t ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG} .
     - docker push ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG}
 
   dependencies:
-    - build-ci-registry
+    - test
 
 deploy: 
   image: sourabh385/helm-oc-cli:latest
