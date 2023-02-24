@@ -23,7 +23,7 @@ def room_name_to_chat_id(room_name):
 @app.post('/api/skype/grafana_alert/{chat_id}')
 def notify(chat_id, alert: GrafanaAlert):
     
-    logger.info("Grafana Alert Message", alert)
+    logger.info("Grafana Alert Message %s", alert)
 
     channel = skype_instance.session.chats.chat(chat_id)
     # mentioning all and sending our created message

@@ -1,23 +1,11 @@
 from pydantic import BaseModel, Field
-from typing import Any, Dict, List
+from typing import Dict, List
 from skpy import SkypeMsg
-
-class Labels(BaseModel):
-    alertname: str
-    team: str
-    zone: str
-
-
-class Annotations(BaseModel):
-    description: str
-    runbook_url: str
-    summary: str
-
 
 class Alert(BaseModel):
     status: str
-    labels: Labels
-    annotations: Annotations
+    labels: Dict[str, str]
+    annotations: Dict[str, str]
     startsAt: str
     endsAt: str
     generatorURL: str
@@ -27,19 +15,14 @@ class Alert(BaseModel):
     panelURL: str
     valueString: str
 
-
-class CommonLabels(BaseModel):
-    team: str
-
-
 class GrafanaAlert(BaseModel):
     receiver: str
     status: str
     orgId: int
     alerts: List[Alert]
-    groupLabels: Dict[str, Any]
-    commonLabels: CommonLabels
-    commonAnnotations: Dict[str, Any]
+    groupLabels: Dict[str, str]
+    commonLabels: Dict[str, str]
+    commonAnnotations: Dict[str, str]
     externalURL: str
     version: str
     groupKey: str
