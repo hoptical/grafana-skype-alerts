@@ -5,8 +5,8 @@ from fastapi import FastAPI, Request
 from pydantic import BaseModel, Field
 from typing import Any, Dict, List
 
-from skype_notifier.helper.skype_utils import SkypeUtils
-from skype_notifier.helper.text_utils import TextUtils
+from app.helper.skype_utils import SkypeUtils
+from app.helper.text_utils import TextUtils
 
 app = FastAPI()
 
@@ -16,7 +16,7 @@ password = os.environ["PASSWORD"]
 import logging
 
 # setup loggers
-logging.config.fileConfig('skype_notifier/logging.conf', disable_existing_loggers=False)
+logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)
 
 # get root logger
 logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project. 
@@ -67,9 +67,9 @@ def notify(room_name, data:Data):
         url = str(data.ruleUrl)
         # since the Grafana sees itself as of localhost, we replace the
         # local host with its real IP
-        url = url.replace('localhost', '127.0.0.1')
+        url = url.replace('localhost', '172.1.1.1')
         # We have attached the IP as a clickable link
-        # instead of showing: 127.0.0.1 in our skype message we put the rule title and
+        # instead of showing: 172.1.1.1 in our skype message we put the rule title and
         # made the title clickable which redirects through the dashboard
         msg = msg + SkypeMsg.link(url, data.title)
         msg = msg + '\n'
