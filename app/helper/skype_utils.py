@@ -30,5 +30,8 @@ class SkypeUtils(object):
                 group_name = recent_chats[chat].__getattribute__('topic')
                 if group_name == room_name:
                     return chat
+                
+        logger.error("Room Name not found!")
+        return None
 
 skype_instance = SkypeUtils()

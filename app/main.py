@@ -1,6 +1,6 @@
 import os
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, status
 
 from app.helper.skype_utils import skype_instance
 from app.helper.model import GrafanaAlert
@@ -9,10 +9,20 @@ from app.helper.logger import logger
 app = FastAPI()
 
 
-@app.post('/api/skype/grafana_alert/{room_name}')
-def notify(room_name, alert: GrafanaAlert):
+@app.get('/api/skype/grafana_alert/{room_name}')
+def room_name_to_chat_id(room_name):
     chat_id = skype_instance.translate_room_name(room_name)
+    if chat_id:
+        return chat_id
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Room not found!"
+        )
 
+@app.post('/api/skype/grafana_alert/{chat_id}')
+def notify(chat_id, alert: GrafanaAlert):
+    
     logger.info("Grafana Alert Message", alert)
 
     channel = skype_instance.session.chats.chat(chat_id)
