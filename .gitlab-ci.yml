@@ -39,7 +39,5 @@ build-okd-registry:
     - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG}
     - docker push ${CONTAINER_REGISTRY_IMAGE}:${CONTAINER_REGISTRY_IMAGE_TAG}
 
-  only:
-    - main
   dependencies:
     - build-ci-registry
