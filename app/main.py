@@ -20,15 +20,12 @@ def room_name_to_chat_id(room_name):
             detail="Room not found!"
         )
 
+
 @app.post('/api/skype/grafana_alert/{chat_id}')
 def notify(chat_id, alert: GrafanaAlert):
-    
+
     logger.info("Grafana Alert Message %s", alert)
-
-    channel = skype_instance.session.chats.chat(chat_id)
-    # mentioning all and sending our created message
-    channel.sendMsg(str(alert), rich=True)
-
+    skype_instance.send_message(chat_id, str(alert))
     return "Grafana alert sent to the channel"
 
 
@@ -58,7 +55,8 @@ def hello():
 def health_check():
     return "The server is healthy"
 
+
 @app.post('/api/log_body')
-async def log_requesst_body(request:Request):
+async def log_requesst_body(request: Request):
     data = await request.json()
     logger.info(data)
