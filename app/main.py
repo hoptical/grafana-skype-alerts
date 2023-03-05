@@ -41,23 +41,6 @@ def notify(chat_id, alert: GrafanaAlert, verbose: bool = False,
     return "Grafana alert sent to the channel"
 
 
-@app.post('/minio_notifications')
-def minio_notifier(request: Request, skype_instance: SkypeUtils = Depends(get_skype)):
-
-    # msg=request.data
-    channel = skype_instance.session.contacts['live:.cid'].chat
-    # msg=request.data
-    msg = request.json()
-    bucket_name = str(msg['Key']).split('/')
-    bucket = bucket_name[0]
-    # TODO
-    cmd = f'cmd /c "python C:\python_scripts\MinioWorker\main.py "{bucket}""'
-    os.system(cmd)
-    channel.sendMsg(cmd)
-
-    return 'get'
-
-
 @app.get('/')
 def hello():
     return 'Grafana Listener\n Use SkypeNotifier URI to receive messages on Skype on alerts'
