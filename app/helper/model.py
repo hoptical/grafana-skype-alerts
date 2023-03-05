@@ -91,7 +91,7 @@ class GrafanaAlert(BaseModel):
             emote = status_emoticon_dict.get(self.status, "")
             return (
                 f"{SkypeMsg.bold(alert_name)}:\n"
-                f"{emote}{SkypeMsg.bold('Status')}: {self.status.upper()} {emote}\n"
+                f"{SkypeMsg.bold('Status')}: {self.status.upper()} {emote}\n"
                 f"{SkypeMsg.bold('Alerts')}\n"
                 f"{join_char.join(textwrap.indent(alert.model_representer(), text_indent) for alert in self.alerts)}\n"
             )

@@ -1,23 +1,41 @@
+https://gitlab.p.ir/data-team/data-engineering/skype-notifier/badges/main/pipeline.svg
+
+
 # Skype Notifier
+The skype notifier is a web server based on Fast API providing a webhook for Grafana Alerts. 
 
+## Docs
+For endpoints documentation please visit `/docs` URI.
 
+## Installation
+You can install the app either by docker compose or helm chart. 
 
-## Getting started
+### Docker Compose
+```bash
+docker compose up --build
 
-To test skype web hook, build the project like:
-`make skype`
+```
+The app is accessible on `http://localhost:8000`
 
-Then call the api to post a message in your Skype channel:
-```shell
-curl --location --request POST 'http://localhost:7654/SkypeNotifier/Your Skype channel' \
---header 'Content-Type: application/json' \
---data-raw '{ "title":  "[Alerting] Test notification",
-"ruleId": 7008839925862512012,  "ruleName":  "Test notification",  "state ":  "alerting",
-"evalMatches": [{ "value": 100,  "metric":  "High value",  "tags": null}, { "value": 200,  "metric":  "Higher Value",  "tags": null}],
-"orgId": 0,  "dashboardId": 1,  "panelId": 1,  "tags": {},  "ruleUrl":  "http://localhost:3000/",
-"imageUrl":  "https://grafana.com/assets/img/blog/mixed_styles.png",
-"message":  "Someone is testing the alert notification within Grafana."}'
+### Helm
+```bash
+helm upgrade --install skype-notifier helm
+
 ```
 
-Also remember the `Automated Grafana` user should be
-added first to your Skype channel
+## Usage
+1. Create a group chat in skype.
+2. Add `Automated Grafana` to that group chat.
+3. Fetch the chat id by `/api/skype/grafana_alert/{room_name}` endpoint with GET method.
+4. Post your message using `/api/skype/grafana_alert/{chat_id}` and defined body message with POST method.   
+
+## Test
+```
+pytest -v
+```
+## Coverage
+```bash
+coverage run -m pytest
+coverage report
+```
+
