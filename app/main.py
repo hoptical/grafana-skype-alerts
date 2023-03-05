@@ -8,15 +8,16 @@ from app.helper.logger import logger
 
 app = FastAPI()
 
-
+# Create skype instance on startup and share it between requests
 @app.on_event("startup")
 def create_skype_instance():
     app.state.skype_instance = SkypeUtils(connect=True)
 
+# Dependency function (get called on every request being depened on) 
 async def get_skype():
     yield app.state.skype_instance
 
-
+# Convert room name to chat id
 @app.get('/api/skype/grafana_alert/{room_name}')
 def room_name_to_chat_id(room_name,
                          skype_instance: SkypeUtils = Depends(get_skype)):
@@ -29,7 +30,7 @@ def room_name_to_chat_id(room_name,
             detail="Room not found!"
         )
 
-
+# Post a Grafana alert to Skype 
 @app.post('/api/skype/grafana_alert/{chat_id}')
 def notify(chat_id, alert: GrafanaAlert, verbose: bool = False,
            skype_instance: SkypeUtils = Depends(get_skype)):
@@ -62,6 +63,7 @@ def hello():
     return 'Grafana Listener\n Use SkypeNotifier URI to receive messages on Skype on alerts'
 
 
+# Called by Kubernetes
 @app.get('/api/health')
 def health_check():
     return "The server is healthy"
