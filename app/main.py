@@ -36,8 +36,14 @@ def notify(chat_id, alert: GrafanaAlert, verbose: bool = False,
            skype_instance: SkypeUtils = Depends(get_skype)):
 
     logger.info("Grafana Alert Message %s", alert)
-    skype_instance.send_message(
-        chat_id, alert.model_representer(verbose=verbose))
+    try:
+        skype_instance.send_message(
+            chat_id, alert.model_representer(verbose=verbose))
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_424_FAILED_DEPENDENCY,
+            detail="Attempt on request has failed. It may be because of the wrong ChatId."
+        )
     return "Grafana alert sent to the channel"
 
 
