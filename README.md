@@ -1,5 +1,4 @@
-https://gitlab.p.ir/data-team/data-engineering/skype-notifier/badges/main/pipeline.svg
-
+[![pipeline status](https://gitlab.p.ir/data-team/data-engineering/skype-notifier/badges/main/pipeline.svg)](https://gitlab.p.ir/data-team/data-engineering/skype-notifier/-/commits/main) 
 
 # Skype Notifier
 The skype notifier is a web server based on Fast API providing a webhook for Grafana Alerts. 
