@@ -37,6 +37,7 @@ class SkypeUtils(object):
                     logger.warn(f"Attempt {attempt}/{MAX_ATTEMPTS} failed")
                     logger.warn("Token expired; Login again...")
                     self._login()
+            # Raise in case of maximum attempt
             raise
         return wrapper
 

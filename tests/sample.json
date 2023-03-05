@@ -115,5 +115,45 @@
     "version": "1",
     "groupKey": "{}:{}",
     "truncatedAlerts": 0
+  },
+  {
+    "receiver": "Skype Order Center Chat",
+    "status": "resolved",
+    "orgId": 1,
+    "alerts": [{
+      "status": "resolved",
+      "labels": {
+        "alertname": "OrderCenter: Express Kafka Message Count",
+        "grafana_folder": "Order_Center",
+        "job": "kafka",
+        "topic": "dbz_raw.express_mysql.zoodfood_db.Orders"
+      },
+      "annotations": {
+        "runbook_url": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/d/T8xVb997k/order-center?orgId=1&refresh=30s&editPanel=2&tab=alert&from=1677414036107&to=1677435636107"
+      },
+      "startsAt": "2023-03-05T05:15:00+03:30",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/alerting/grafana/_TNKAhx4k/view?orgId=1",
+      "fingerprint": "1dbd5c7e00ee3cba",
+      "silenceURL": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/alerting/silence/new?alertmanager=grafana&matcher=alertname%3DOrderCenter%3A+Express+Kafka+Message+Count&matcher=grafana_folder%3DOrder_Center&matcher=job%3Dkafka&matcher=topic%3Ddbz_raw.express_mysql.zoodfood_db.Orders",
+      "dashboardURL": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/d/T8xVb997k?orgId=1",
+      "panelURL": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/d/T8xVb997k?orgId=1&viewPanel=2",
+      "valueString": "[ var='B' labels={job=kafka, topic=dbz_raw.express_mysql.zoodfood_db.Orders} value=0.03793103448275863 ], [ var='C' labels={job=kafka, topic=dbz_raw.express_mysql.zoodfood_db.Orders} value=1 ]"
+    }],
+    "groupLabels": {},
+    "commonLabels": {
+      "alertname": "OrderCenter: Express Kafka Message Count",
+      "grafana_folder": "Order_Center",
+      "job": "kafka",
+      "topic": "dbz_raw.express_mysql.zoodfood_db.Orders"
+    },
+    "commonAnnotations": {},
+    "externalURL": "https://grafana-dpn.apps.private.okd4.teh-1.snappcloud.io/",
+    "version": 1,
+    "groupKey": "{}/{pipeline=\"ordercenter_cdc\"}:{alertname=\"OrderCenter: Express Kafka Message Count\", grafana_folder=\"Order_Center\"}",
+    "truncatedAlerts": 0,
+    "title": "[FIRING:1] OrderCenter: Express Kafka Message Count Order_Center (kafka dbz_raw.express_mysql.zoodfood_db.Orders)",
+    "state": "alerting",
+    "message": "Firing"
   }
 ]
