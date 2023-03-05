@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List
+from typing import Dict, List, Optional
 from skpy import SkypeMsg
 import textwrap
 import re
@@ -14,8 +14,8 @@ class Alert(BaseModel):
     generatorURL: str
     fingerprint: str
     silenceURL: str
-    dashboardURL: str
-    panelURL: str
+    dashboardURL: Optional[str]
+    panelURL: Optional[str]
     valueString: str
 
     def model_representer(self):
@@ -61,9 +61,9 @@ class GrafanaAlert(BaseModel):
     version: str
     groupKey: str
     truncatedAlerts: int
-    title: str
-    state: str
-    message: str
+    title: Optional[str]
+    state: Optional[str]
+    message: Optional[str]
 
     def model_representer(self, verbose=False):
         if verbose:
