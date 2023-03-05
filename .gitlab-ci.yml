@@ -9,12 +9,11 @@ variables:
   OKD_PROJECT_NAME: "skype-notifier-dpn"
 
 test: 
-  image: sourabh385/helm-oc-cli:latest
+  image: python:3.9
   stage: test
   script:
-    - oc login --token=${OKD_TOKEN} --server=${OKD_URL}
-    - oc project ${OKD_PROJECT_NAME}
-    - helm install --dry-run skype-notifier helm 
+    - pip install --no-cache-dir --upgrade -r requirements.txt
+    - pytest -v
 
 build-okd-registry:
   image: docker:19.03.12
@@ -23,7 +22,7 @@ build-okd-registry:
     DOCKER_DRIVER: overlay2
     CONTAINER_REGISTRY_ADDRESS: "$OKD_REGISTRY"
     CONTAINER_REGISTRY_IMAGE: "$OKD_REGISTRY/$OKD_PROJECT_NAME/$CI_PROJECT_NAME"
-    CONTAINER_REGISTRY_IMAGE_TAG: "1.0.3"
+    CONTAINER_REGISTRY_IMAGE_TAG: "1.1.0"
     CONTAINER_REGISTRY_USERNAME: "gitlab-ci"
     CONTAINER_REGISTRY_PASSWORD: ${OKD_TOKEN}
 
@@ -36,7 +35,7 @@ build-okd-registry:
     - test
 
 deploy: 
-  image: sourabh385/helm-oc-cli:latest
+  image: registry.snapp.tech/data-team/docker/openshift/helm-oc:1.0
   stage: deploy
   script:
     - oc login --token=${OKD_TOKEN} --server=${OKD_URL}
