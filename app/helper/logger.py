@@ -1,4 +1,4 @@
-import logging
+import logging.config
 
 # setup loggers
 logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)

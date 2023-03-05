@@ -5,18 +5,18 @@ from app.helper.logger import logger
 
 class SkypeUtils(object):
 
-    def __init__(self):
+    def __init__(self, connect=True):
 
         self._username = os.environ["USERNAME"]
         self._password = os.environ["PASSWORD"]
         # Login with the credentials
-        self._login()
+        self._login(connect)
 
-    def _login(self):
+    def _login(self, connect=True):
         logger.info(
             "Connecting to Skype with {} as username".format(self._username))
         try:
-            self.session = Skype(self._username, self._password)
+            self.session = Skype(self._username, self._password, connect=connect)
         except SkypeAuthException:
             logger.error("Skype authenticaion Error!")
             raise
@@ -63,4 +63,4 @@ class SkypeUtils(object):
         channel = self.session.chats.chat(chat_id)
         channel.sendMsg(message, rich=True)
 
-skype_instance = SkypeUtils()
+#skype_instance = SkypeUtils()

@@ -1,16 +1,25 @@
 import os
 
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import FastAPI, Request, HTTPException, status, Depends
 
-from app.helper.skype_utils import skype_instance
+from app.helper.skype_utils import SkypeUtils
 from app.helper.model import GrafanaAlert
 from app.helper.logger import logger
 
 app = FastAPI()
 
 
+@app.on_event("startup")
+def create_skype_instance():
+    app.state.skype_instance = SkypeUtils(connect=True)
+
+async def get_skype():
+    yield app.state.skype_instance
+
+
 @app.get('/api/skype/grafana_alert/{room_name}')
-def room_name_to_chat_id(room_name):
+def room_name_to_chat_id(room_name,
+                         skype_instance: SkypeUtils = Depends(get_skype)):
     chat_id = skype_instance.translate_room_name(room_name)
     if chat_id:
         return chat_id
@@ -22,7 +31,8 @@ def room_name_to_chat_id(room_name):
 
 
 @app.post('/api/skype/grafana_alert/{chat_id}')
-def notify(chat_id, alert: GrafanaAlert, verbose: bool = False):
+def notify(chat_id, alert: GrafanaAlert, verbose: bool = False,
+           skype_instance: SkypeUtils = Depends(get_skype)):
 
     logger.info("Grafana Alert Message %s", alert)
     skype_instance.send_message(
@@ -31,7 +41,7 @@ def notify(chat_id, alert: GrafanaAlert, verbose: bool = False):
 
 
 @app.post('/minio_notifications')
-def minio_notifier(request: Request):
+def minio_notifier(request: Request, skype_instance: SkypeUtils = Depends(get_skype)):
 
     # msg=request.data
     channel = skype_instance.session.contacts['live:.cid'].chat
