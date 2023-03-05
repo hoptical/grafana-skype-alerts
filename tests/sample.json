@@ -115,5 +115,45 @@
     "version": "1",
     "groupKey": "{}:{}",
     "truncatedAlerts": 0
+  },
+  {
+    "receiver": "Skype my-service Chat",
+    "status": "resolved",
+    "orgId": 1,
+    "alerts": [{
+      "status": "resolved",
+      "labels": {
+        "alertname": "MyService: Express Kafka Message Count",
+        "grafana_folder": "MyService",
+        "job": "kafka",
+        "topic": "mytopic"
+      },
+      "annotations": {
+        "runbook_url": "https://play.grafana.org/d/T8xVb997k/my-service?orgId=1&refresh=30s&editPanel=2&tab=alert&from=1677414036107&to=1677435636107"
+      },
+      "startsAt": "2023-03-05T05:15:00+03:30",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "https://play.grafana.org/alerting/grafana/_TNKAhx4k/view?orgId=1",
+      "fingerprint": "1dbd5c7e00ee3cba",
+      "silenceURL": "https://play.grafana.org/alerting/silence/new?alertmanager=grafana&matcher=alertname%3Dmy-service%3A+Express+Kafka+Message+Count&matcher=grafana_folder%3DMyService&matcher=job%3Dkafka&matcher=topic%3Dmytopic",
+      "dashboardURL": "https://play.grafana.org/d/T8xVb997k?orgId=1",
+      "panelURL": "https://play.grafana.org/d/T8xVb997k?orgId=1&viewPanel=2",
+      "valueString": "[ var='B' labels={job=kafka, topic=mytopic} value=0.03793103448275863 ], [ var='C' labels={job=kafka, topic=mytopic} value=1 ]"
+    }],
+    "groupLabels": {},
+    "commonLabels": {
+      "alertname": "MyService: Express Kafka Message Count",
+      "grafana_folder": "MyService",
+      "job": "kafka",
+      "topic": "mytopic"
+    },
+    "commonAnnotations": {},
+    "externalURL": "https://play.grafana.org/",
+    "version": 1,
+    "groupKey": "{}/{pipeline=\"my-service_cdc\"}:{alertname=\"MyService: Express Kafka Message Count\", grafana_folder=\"MyService\"}",
+    "truncatedAlerts": 0,
+    "title": "[FIRING:1] MyService: Express Kafka Message Count MyService (kafka mytopic)",
+    "state": "alerting",
+    "message": "Firing"
   }
 ]

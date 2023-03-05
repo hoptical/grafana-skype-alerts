@@ -4,7 +4,6 @@ from skpy import SkypeMsg
 import textwrap
 import re
 
-
 class Alert(BaseModel):
     status: str
     labels: Dict[str, str]
@@ -19,16 +18,14 @@ class Alert(BaseModel):
     valueString: str
 
     def model_representer(self):
-        alert_name = self.labels.get("alertname", "")
 
         return(
-            f"{SkypeMsg.bold('Status')}: {self.status}\n"
-            f"{SkypeMsg.bold('Title')}: {alert_name}\n"
-            f"{SkypeMsg.bold('Values')}: {self.value_string_parser()}"
-            f"{SkypeMsg.bold('Silence URL')}: {self.silenceURL}\n"
-            f"{SkypeMsg.bold('Panel URL')}: {self.panelURL}\n"
+            f"{SkypeMsg.bold('Labels')}: {self.labels}\n"
+            f"{SkypeMsg.bold('Values')}: {self.value_string_parser()}\n"
             f"{SkypeMsg.bold('Starts at')}: {self.startsAt}\n"
             f"{SkypeMsg.bold('Ends at')}: {self.endsAt}\n"
+            f"{SkypeMsg.link(url=self.panelURL, display='Panel URL')}\n"
+            f"{SkypeMsg.link(url=self.silenceURL, display='Silence URL')}\n"
         )
 
     def value_string_parser(self):
@@ -45,7 +42,7 @@ class Alert(BaseModel):
             metric = match[0]
             labels = match[1]
             value = match[2]
-            result += "{} = {} \n".format(metric, value)
+            result += "{} = {} \t ".format(metric, value)
         return result
 
 
@@ -87,8 +84,14 @@ class GrafanaAlert(BaseModel):
         else:
             join_char = '\n\n'
             text_indent = "    "
+            alert_name = self.commonLabels.get("alertname", "")
+            status_emoticon_dict = {"firing": SkypeMsg.emote("bomb"),
+                                "resolved": SkypeMsg.emote("smile")}
+    
+            emote = status_emoticon_dict.get(self.status, "")
             return (
-                f"{SkypeMsg.bold('GrafanaAlert')}:\n"
+                f"{SkypeMsg.bold(alert_name)}:\n"
+                f"{emote}{SkypeMsg.bold('Status')}: {self.status.upper()} {emote}\n"
                 f"{SkypeMsg.bold('Alerts')}\n"
                 f"{join_char.join(textwrap.indent(alert.model_representer(), text_indent) for alert in self.alerts)}\n"
             )
