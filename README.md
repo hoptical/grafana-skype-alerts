@@ -1,9 +1,9 @@
-[![License](https://img.shields.io/github/license/hoptical/grafana-skype-alerts)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
  [![CI](https://github.com/hoptical/grafana-skype-alerts/actions/workflows/ci.yml/badge.svg)](https://github.com/hoptical/grafana-skype-alerts/actions/workflows/ci.yml)
 [![Release](https://github.com/hoptical/grafana-skype-alerts/actions/workflows/release.yml/badge.svg)](https://github.com/hoptical/grafana-skype-alerts/actions/workflows/release.yml)
 
 # Grafana Skype Alerts
-This repo provides a simple REST API to send Grafana Alert messages to skype group chats. It is designed to be used as a webhook for Grafana alert notification channel. It's response body is based on the [Grafana Webhook](https://grafana.com/docs/grafana/latest/alerting/notifications/#webhook) format.
+This repo provides a simple REST API to send Grafana Alert messages to skype group chats. It is designed to be used as a webhook for Grafana alert notification channel. It's response body is based on the [Grafana Webhook](https://grafana.com/docs/grafana/latest/alerting/manage-notifications/webhook-notifier/) format.
 
 
 ## Requirements
