@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*" # Run workflow on version tags, e.g. v1.0.0.
+jobs:
+  push_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build and push Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        version: ${{ github.ref }}
+      run: |
+        docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_TOKEN
+        docker build -t my-image .
+        docker tag my-image $DOCKER_USERNAME/grafana-skype-alerts:$version
+        docker push $DOCKER_USERNAME/grafana-skype-alerts:$version
+
+    - name: Create release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes:
+          - Added feature X
+          - Fixed bug Y
+        draft: true
