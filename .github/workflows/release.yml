@@ -2,10 +2,9 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*.*.*" # Run workflow on version tags, e.g. v1.0.0.
+
 jobs:
   push_and_release:
     runs-on: ubuntu-latest
@@ -17,7 +16,7 @@ jobs:
     - name: Build and push Docker image
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
         version: ${{ github.ref }}
       run: |
         docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_TOKEN
