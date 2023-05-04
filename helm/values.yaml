@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: image-registry.openshift-image-registry.svc:5000/skype-notifier-dpn/skype-notifier
+  repository: hamedkarbasi/grafana-skype-alerts
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -39,9 +39,6 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 8000
-
-route:
-  host: skype-notifier-dpn.apps.private.okd4.teh-1.cloud.io
 
 ingress:
   enabled: false
