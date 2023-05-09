@@ -4,6 +4,7 @@ from skpy import SkypeMsg
 import textwrap
 import re
 
+
 class Alert(BaseModel):
     status: str
     labels: Dict[str, str]
@@ -16,10 +17,11 @@ class Alert(BaseModel):
     dashboardURL: Optional[str]
     panelURL: Optional[str]
     valueString: str
+    values: Optional[Dict[str, float]]
+    imageURL: Optional[str]
 
     def model_representer(self):
-
-        return(
+        return (
             f"{SkypeMsg.bold('Labels')}: {self.labels}\n"
             f"{SkypeMsg.bold('Values')}: {self.value_string_parser()}\n"
             f"{SkypeMsg.bold('Starts at')}: {self.startsAt}\n"
@@ -29,14 +31,13 @@ class Alert(BaseModel):
         )
 
     def value_string_parser(self):
-
         # Define the pattern
         pattern = r"'([^']*)'\s*labels=\{([^}]*)\}\s*value=([^\]]*)"
 
         # Find matches
         matches = re.findall(pattern, self.valueString)
 
-        result = ''
+        result = ""
         # Extract the values from the matches
         for match in matches:
             metric = match[0]
@@ -82,12 +83,14 @@ class GrafanaAlert(BaseModel):
                 f"{SkypeMsg.bold('message')}: {self.message}\n"
             )
         else:
-            join_char = '\n\n'
+            join_char = "\n\n"
             text_indent = "    "
             alert_name = self.commonLabels.get("alertname", "")
-            status_emoticon_dict = {"firing": SkypeMsg.emote("bomb"),
-                                "resolved": SkypeMsg.emote("smile")}
-    
+            status_emoticon_dict = {
+                "firing": SkypeMsg.emote("bomb"),
+                "resolved": SkypeMsg.emote("smile"),
+            }
+
             emote = status_emoticon_dict.get(self.status, "")
             return (
                 f"{SkypeMsg.bold(alert_name)}:\n"
