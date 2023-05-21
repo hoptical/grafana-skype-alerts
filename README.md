@@ -29,9 +29,10 @@ helm upgrade --install skype-notifier helm/
 ## Usage
 1. Create a group chat in skype.
 2. Add the skype account to that group chat.
-3. Fetch the chat id by `/api/skype/grafana_alert/{room_name}` endpoint with GET method.
-4. Post your message using `/api/skype/grafana_alert/{chat_id}` and defined body message with POST method for test purposes.
-5. In the Grafana Alert Manager, create a webhook notification channel and provide the `/api/skype/grafana_alert/{chat_id}` endpoint as the URL.
+3. Login with the skype account and accept invitation to that chat group.
+4. Fetch the chat id by `/api/skype/grafana_alert/{room_name}` endpoint with GET method.
+5. Post your message using `/api/skype/grafana_alert/{chat_id}` and defined body message with POST method for test purposes.
+6. In the Grafana Alert Manager, create a webhook notification channel and provide the `/api/skype/grafana_alert/{chat_id}` endpoint as the URL.
 
 ![firing-alert](static/firing-alert.png)
 ![resolved-alert](static/resolved-alert.png)
